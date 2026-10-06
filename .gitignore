@@ -1,0 +1,102 @@
+# ==============================================================================
+# CapCut AI Voice Studio - .gitignore
+# Standard Git ignore file for Python, Web, and Generated Assets
+# ==============================================================================
+
+# --- Output & Generated Files (TTS, Previews, Audio) ---
+outputs/
+*.mp3
+*.wav
+*.ogg
+*.m4a
+*.mp4
+*.aac
+*.flac
+
+# --- Private / Custom Device Configuration ---
+# Keep device.json.example committed, ignore custom device configs
+device.json
+device_*.json
+*.local.json
+
+# --- Python Bytecode & Runtime Cache ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# --- Distribution / Packaging / Builds ---
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# --- Virtual Environments ---
+.env
+.env.*
+.venv/
+venv/
+ENV/
+env/
+env.bak/
+venv.bak/
+
+# --- IDEs & Code Editors ---
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+*.swo
+
+# --- Logs & Databases ---
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.sqlite
+*.sqlite3
+
+# --- Testing & Coverage ---
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+
+# --- Operating System Junk Files ---
+# Windows
+Thumbs.db
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux
+*~
+.directory

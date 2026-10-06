@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CapCut AI Voice Studio - Chuyển Văn Bản Thành Giọng Nói MP3</title>
+    <meta name="description" content="Công cụ chuyển đổi văn bản thành giọng nói AI CapCut chất lượng cao. Hỗ trợ giọng đọc Việt Nam (VN) và Hoa Kỳ (en-US), tải file MP3 tức thì.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <!-- Background Ambient Glows -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+    <div class="ambient-glow glow-3"></div>
+
+    <!-- App Container -->
+    <div class="app-layout">
+        <!-- Top Header -->
+        <header class="app-header">
+            <div class="header-brand">
+                <div class="brand-logo-wrap">
+                    <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" fill="url(#brand-grad)"/>
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                        <line x1="12" x2="12" y1="19" y2="22"/>
+                        <line x1="8" x2="16" y1="22" y2="22"/>
+                        <defs>
+                            <linearGradient id="brand-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#8B5CF6"/>
+                                <stop offset="100%" stop-color="#06B6D4"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <div>
+                    <div class="brand-title-wrap">
+                        <span class="brand-title">CapCut AI Voice Studio</span>
+                        <span class="brand-badge">PRO SDK</span>
+                    </div>
+                    <p class="brand-subtitle">Bộ công cụ chuyển đổi văn bản sang giọng đọc tự nhiên chuẩn CapCut</p>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <div class="status-indicator" title="Kết nối trực tiếp tới CapCut Engine">
+                    <span class="status-dot"></span>
+                    <span class="status-text">CapCut API Trực Tuyến</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Studio Content -->
+        <main class="studio-grid">
+            <!-- Left Column: Input & Controls -->
+            <section class="studio-col left-col">
+                <!-- Text Input Box -->
+                <div class="card glass-card input-card">
+                    <div class="card-header">
+                        <div class="card-title-group">
+                            <span class="card-icon">✍️</span>
+                            <h2 class="card-title">Nội dung văn bản</h2>
+                        </div>
+                        <div class="char-counter" id="charCounter">
+                            <span id="charCount">0</span> ký tự • <span id="wordCount">0</span> từ
+                        </div>
+                    </div>
+
+                    <!-- Prompt suggestions -->
+                    <div class="prompt-chips-wrap">
+                        <span class="chip-label">Mẫu nhanh:</span>
+                        <button type="button" class="prompt-chip" data-sample="Chào bạn, tôi là Sơn! Rất vui được đồng hành cùng bạn trong video ngày hôm nay.">
+                            👋 Lời chào
+                        </button>
+                        <button type="button" class="prompt-chip" data-sample="Vào một đêm mưa bão tại thành phố New York, một điều kỳ lạ bất ngờ xuất hiện khiến cả thị trấn hoang mang...">
+                            🎬 Review phim
+                        </button>
+                        <button type="button" class="prompt-chip" data-sample="Bản tin 60 giây hôm nay, cập nhật những diễn biến mới nhất về công nghệ trí tuệ nhân tạo toàn cầu.">
+                            🎙️ Bản tin
+                        </button>
+                        <button type="button" class="prompt-chip" data-sample="Hello everyone! Welcome back to our channel. Today we have something truly exciting to share with you!">
+                            🇺🇸 Tiếng Anh (US)
+                        </button>
+                    </div>
+
+                    <!-- Textarea -->
+                    <div class="textarea-wrapper">
+                        <textarea 
+                            id="ttsTextInput" 
+                            class="studio-textarea" 
+                            placeholder="Nhập hoặc dán văn bản bạn muốn chuyển đổi thành giọng nói tại đây... (Ví dụ: Chào tôi là Sơn, chúc bạn một ngày tràn đầy năng lượng!)"
+                            rows="7"
+                        ></textarea>
+                        <div class="textarea-quick-actions">
+                            <button type="button" id="btnPasteText" class="btn-icon-subtle" title="Dán từ Clipboard">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+                                    <rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
+                                </svg>
+                                <span>Dán</span>
+                            </button>
+                            <button type="button" id="btnClearText" class="btn-icon-subtle" title="Xóa toàn bộ">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M18 6 6 18M6 6l12 12"/>
+                                </svg>
+                                <span>Xóa</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Speech Speed Controls -->
+                    <div class="controls-row">
+                        <div class="speed-control-box">
+                            <div class="speed-header">
+                                <label for="rateSlider" class="control-label">
+                                    <span>Tốc độ đọc (Rate)</span>
+                                    <span id="rateValue" class="rate-badge">1.0x</span>
+                                </label>
+                                <div class="speed-presets">
+                                    <button type="button" class="speed-pill" data-rate="0.8">0.8x</button>
+                                    <button type="button" class="speed-pill active" data-rate="1.0">1.0x</button>
+                                    <button type="button" class="speed-pill" data-rate="1.2">1.2x</button>
+                                    <button type="button" class="speed-pill" data-rate="1.5">1.5x</button>
+                                </div>
+                            </div>
+                            <input type="range" id="rateSlider" min="0.5" max="2.0" step="0.1" value="1.0" class="studio-slider">
+                        </div>
+                    </div>
+
+                    <!-- Generate CTA Button -->
+                    <button type="button" id="btnGenerate" class="btn-cta-generate">
+                        <div class="btn-content">
+                            <span class="btn-icon-pulse">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                    <polygon points="5 3 19 12 5 21 5 3"/>
+                                </svg>
+                            </span>
+                            <span class="btn-label" id="btnGenerateLabel">Tạo Giọng Nói & Xuất File MP3</span>
+                        </div>
+                        <div class="btn-glow-layer"></div>
+                    </button>
+
+                    <!-- Loading Progress Indicator -->
+                    <div id="generationProgress" class="generation-progress hidden">
+                        <div class="progress-bar-track">
+                            <div class="progress-bar-fill" id="progressFill"></div>
+                        </div>
+                        <div class="progress-status-text" id="progressStatusText">
+                            Đang kết nối tới CapCut Cloud TTS...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Active Audio Player Card -->
+                <div class="card glass-card player-card" id="playerCard">
+                    <div class="card-header">
+                        <div class="card-title-group">
+                            <span class="card-icon">🎧</span>
+                            <h2 class="card-title">Kết quả âm thanh</h2>
+                        </div>
+                        <div id="playerMetaBadge" class="player-meta-badge hidden">
+                            <span id="playerMetaVoice">Nhỏ Ngọt Ngào</span> • <span id="playerMetaDuration">0s</span>
+                        </div>
+                    </div>
+
+                    <!-- Placeholder when no audio generated yet -->
+                    <div id="playerPlaceholder" class="player-empty-state">
+                        <div class="empty-icon-halo">
+                            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                <path d="M9 18V5l12-2v13"/>
+                                <circle cx="6" cy="18" r="3"/>
+                                <circle cx="18" cy="16" r="3"/>
+                            </svg>
+                        </div>
+                        <p class="empty-title">Chưa có file âm thanh nào</p>
+                        <p class="empty-desc">Nhập văn bản, chọn giọng đọc và nhấn nút "Tạo Giọng Nói & Xuất File MP3" ở trên.</p>
+                    </div>
+
+                    <!-- Active Sound Player (Hidden by default) -->
+                    <div id="activePlayerBox" class="active-player-box hidden">
+                        <!-- Soundwave animation bars -->
+                        <div class="soundwave-visualizer" id="waveVisualizer">
+                            <span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span>
+                            <span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span>
+                            <span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span>
+                            <span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span>
+                            <span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span>
+                            <span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span>
+                        </div>
+
+                        <!-- Audio player controls -->
+                        <div class="custom-audio-controls">
+                            <button type="button" id="btnPlayPause" class="btn-play-large" title="Phát / Dừng">
+                                <svg id="playIcon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                                    <polygon points="6 4 20 12 6 20 6 4"/>
+                                </svg>
+                                <svg id="pauseIcon" class="hidden" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                                    <rect x="6" y="4" width="4" height="16"/>
+                                    <rect x="14" y="4" width="4" height="16"/>
+                                </svg>
+                            </button>
+
+                            <div class="playback-timeline">
+                                <div class="time-readout">
+                                    <span id="currentTimeDisplay">00:00</span>
+                                    <span class="time-sep">/</span>
+                                    <span id="totalTimeDisplay">00:00</span>
+                                </div>
+                                <input type="range" id="seekSlider" class="seek-slider" min="0" max="100" value="0">
+                            </div>
+
+                            <div class="volume-box">
+                                <button type="button" id="btnToggleMute" class="btn-icon-subtle" title="Âm lượng">
+                                    <svg id="volumeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                                        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+                                    </svg>
+                                </button>
+                                <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="1" class="volume-slider">
+                            </div>
+                        </div>
+
+                        <!-- Native hidden audio element -->
+                        <audio id="nativeAudioElement" preload="metadata"></audio>
+
+                        <!-- Action buttons: Direct Download MP3 & Copy URL -->
+                        <div class="player-footer-actions">
+                            <a id="btnDownloadMp3" href="#" download="capcut_speech.mp3" class="btn-action-primary">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                    <polyline points="7 10 12 15 17 10"/>
+                                    <line x1="12" y1="15" x2="12" y2="3"/>
+                                </svg>
+                                <span>Tải File MP3 Về Máy</span>
+                            </a>
+                            <button type="button" id="btnCopyAudioLink" class="btn-action-secondary">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                                <span>Sao chép link</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Column: Voice Catalog Selection -->
+            <section class="studio-col right-col">
+                <div class="card glass-card voice-catalog-card">
+                    <div class="card-header">
+                        <div class="card-title-group">
+                            <span class="card-icon">🎙️</span>
+                            <h2 class="card-title">Kho Giọng Đọc CapCut</h2>
+                        </div>
+                        <span id="voiceCountBadge" class="catalog-badge">Đang tải...</span>
+                    </div>
+
+                    <!-- Voice Region Selector Tabs -->
+                    <div class="voice-region-tabs">
+                        <button type="button" class="region-tab active" data-region="vn">
+                            <span class="tab-flag">🇻🇳</span>
+                            <span class="tab-title">Việt Nam</span>
+                            <span class="tab-count" id="countVn">24</span>
+                        </button>
+                        <button type="button" class="region-tab" data-region="us">
+                            <span class="tab-flag">🇺🇸</span>
+                            <span class="tab-title">Hoa Kỳ (US)</span>
+                            <span class="tab-count" id="countUs">40</span>
+                        </button>
+                        <button type="button" class="region-tab" data-region="all">
+                            <span class="tab-flag">🌐</span>
+                            <span class="tab-title">Tất cả quốc tế</span>
+                            <span class="tab-count" id="countAll">129</span>
+                        </button>
+                    </div>
+
+                    <!-- Search and Gender Filters -->
+                    <div class="catalog-filters-bar">
+                        <div class="voice-search-box">
+                            <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"/>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                            </svg>
+                            <input type="text" id="voiceSearchInput" placeholder="Tìm theo tên giọng (vd: Nhỏ Ngọt Ngào, Janeamber, Deadpool, Nam Minh...)" class="search-input">
+                            <button type="button" id="btnClearSearch" class="btn-clear-search hidden">&times;</button>
+                        </div>
+                        <div class="filter-pills-row">
+                            <button type="button" class="filter-pill active" data-filter="all">Tất cả phong cách</button>
+                            <button type="button" class="filter-pill" data-filter="female">👩 Giọng Nữ</button>
+                            <button type="button" class="filter-pill" data-filter="male">👨 Giọng Nam</button>
+                            <button type="button" class="filter-pill" data-filter="special">🎭 Hiệu ứng / Nhân vật</button>
+                        </div>
+                    </div>
+
+                    <!-- Active Selected Voice Display -->
+                    <div class="active-voice-banner">
+                        <div class="banner-voice-info">
+                            <span class="banner-avatar" id="activeVoiceAvatar">👩</span>
+                            <div class="banner-details">
+                                <span class="banner-label">Giọng đang chọn:</span>
+                                <strong id="activeVoiceName">Nhỏ Ngọt Ngào</strong>
+                                <span class="banner-type" id="activeVoiceType">BV421_vivn_streaming</span>
+                            </div>
+                        </div>
+                        <button type="button" id="btnPreviewVoice" class="btn-preview-banner" title="Nghe thử giọng đọc mẫu">
+                            <span class="preview-icon" id="previewIcon">🔊</span>
+                            <span id="btnPreviewText">Nghe thử giọng</span>
+                        </button>
+                    </div>
+
+                    <!-- Voice Cards Grid -->
+                    <div class="voice-cards-grid" id="voiceCardsGrid">
+                        <!-- Rendered dynamically by JavaScript -->
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Generation History Section -->
+        <section class="card glass-card history-section">
+            <div class="card-header">
+                <div class="card-title-group">
+                    <span class="card-icon">🕒</span>
+                    <h2 class="card-title">Lịch sử tạo file gần đây</h2>
+                </div>
+                <div class="history-header-actions">
+                    <button type="button" id="btnRefreshHistory" class="btn-icon-subtle" title="Làm mới lịch sử">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+                        </svg>
+                        <span>Làm mới</span>
+                    </button>
+                    <button type="button" id="btnClearHistory" class="btn-icon-subtle btn-danger-subtle" title="Xóa toàn bộ lịch sử">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="3 6 5 6 21 6"/>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                            <line x1="10" y1="11" x2="10" y2="17"/>
+                            <line x1="14" y1="11" x2="14" y2="17"/>
+                        </svg>
+                        <span>Xóa tất cả</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="history-list-wrapper" id="historyListWrapper">
+                <div id="historyEmpty" class="history-empty">Chưa có bản thu âm nào được tạo trong phiên này.</div>
+                <div class="history-grid" id="historyGrid"></div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>CapCut TTS Studio • Phiên bản SDK v1.0.0 • Thuần Python Native Cryptography (RSA PKCS#1 v1.5 + AWS SigV4)</p>
+            <p class="footer-sub">Hỗ trợ đầy đủ tiếng Việt 🇻🇳 & Hoa Kỳ (en-US) 🇺🇸 • Tự động giải quyết Resource ID</p>
+        </footer>
+    </div>
+
+    <!-- Floating Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- JavaScript Application Logic -->
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
